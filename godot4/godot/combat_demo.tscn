@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://78f3faqv2y0b"]
+
+[ext_resource type="Script" path="res://active_turn_queue.gd" id="1_0wf5u"]
+[ext_resource type="PackedScene" uid="uid://c0bu3boxxb8u2" path="res://CombatSystem/Battler/battler.tscn" id="2_tvvsp"]
+
+[node name="CombatDemo" type="Node2D"]
+
+[node name="ActiveTurnQueue" type="Node2D" parent="."]
+script = ExtResource("1_0wf5u")
+
+[node name="Bear" parent="ActiveTurnQueue" instance=ExtResource("2_tvvsp")]
+
+[node name="BugCat" parent="ActiveTurnQueue" instance=ExtResource("2_tvvsp")]
