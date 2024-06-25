@@ -42,6 +42,13 @@ var _readiness := 0.0:
 			ready_to_act.emit()
 			set_process(false)
 
+# HPが `0` になったときに反応するように、ステータスの `health_depleted` シグナルに接続します。
+func _ready() -> void:
+	assert(stats is BattlerStats)
+	stats = stats.duplicate() as BattlerStats
+	stats.reinitialize()
+	stats.health_depleted.connect(_on_BattlerStats_health_depleted)
+
 
 func _process(delta):
 	_readiness = _readiness + stats.spd * delta * time_scale
@@ -49,3 +56,12 @@ func _process(delta):
 
 func is_player_controlled() -> bool:
 	return ai_scene == null
+
+
+func _on_BattlerStats_health_depleted() -> void:
+	# HPが0になったら, このバトラーの処理をオフにします.
+	is_active = false
+	# 次に、それが敵であれば、選択不可能にします。
+	# パーティメンバーの場合、復活させるために選択できるようにしたい。
+	if not is_party_member:
+		is_selectable = false
