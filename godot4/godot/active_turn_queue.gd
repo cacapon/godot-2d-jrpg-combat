@@ -5,21 +5,10 @@ extends Node
 var _party_members :Array[Battler] = []
 var _opponents :Array[Battler] = []
 
-## 戦闘のイントロ, カットシーン, 戦闘終了時に, 戦闘を一時停止できるようにします。[br]
-## 各バトラーの `is_active` を更新します。
-var is_active: bool = true:
-	set(value):
-		is_active = value
-		for battler:Battler in battlers:
-			battler.is_active = is_active
-
-## ActiveTurnQueueのtime_scaleはアクセシビリティと難易度コントロールのために使います。[br]
-## 各バトラーの `time_scale` を更新します。
-var time_scale:= 1.0: 
-	set(value):
-		time_scale = value
-		for battler:Battler in battlers:
-			battler.time_scale = time_scale
+## 戦闘のイントロ, カットシーン, 戦闘終了時に, 戦闘を一時停止できるようにします。
+var is_active: bool = true: set = set_is_active
+## ActiveTurnQueueのtime_scaleはアクセシビリティと難易度コントロールのために使います。
+var time_scale:= 1.0: set = set_time_scale
 
 ## エンカウントした際のすべてのバトラーはこのノードの子になります.[br]
 ## get_children()ですべてのリストを得ることができます。
@@ -35,6 +24,18 @@ func _ready() -> void:
 			_party_members.append(battler)
 		else:
 			_opponents.append(battler)
+
+func set_is_active(value:bool) -> void:
+	# 各バトラーの `is_active` を更新します。
+	is_active = value
+	for battler:Battler in battlers:
+		battler.is_active = is_active
+
+func set_time_scale(value:float) -> void:
+	# 各バトラーの `time_scale` を更新します。
+	time_scale = value
+	for battler:Battler in battlers:
+		battler.time_scale = time_scale
 
 
 func _play_turn(battler: Battler) -> void:
